@@ -110,6 +110,12 @@ function AccountOperations() {
           />
           <button>Request Loan</button>
         </div>
+        <div>
+          <span>
+            Pay back ${"loan"} {"Purpose"}
+          </span>
+          <button>Pay Loan</button>
+        </div>
       </div>
     </div>
   );
