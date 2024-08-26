@@ -81,7 +81,7 @@ function AccountOperations() {
             <option value="EUR">Euro</option>
             <option value="GBP">British Pound</option>
           </select>
-          <button>Deposit</button>
+          <button>Deposit {depositAmt}</button>
         </div>
         <div>
           <label htmlFor="withdraw">Withdraw</label>
@@ -91,7 +91,7 @@ function AccountOperations() {
             value={withdrawAmt}
             onChange={(e) => setWithdrawAmt((wa) => e.target.value)}
           />
-          <button>Withdraw</button>
+          <button>Withdraw {withdrawAmt}</button>
         </div>
         <div>
           <label htmlFor="loan">Request loan</label>
