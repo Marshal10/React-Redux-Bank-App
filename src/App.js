@@ -1,8 +1,16 @@
+function formatCurrency(value) {
+  return new Intl.NumberFormat("en", {
+    style: "currency",
+    currency: "USD",
+  }).format(value);
+}
+
 function App() {
   return (
     <div>
       <h1>🏦 The React-Redux Bank ⚛️</h1>
       <CreateCustomer />
+      <BalanceDisplay />
     </div>
   );
 }
@@ -24,6 +32,10 @@ function CreateCustomer() {
       </div>
     </div>
   );
+}
+
+function BalanceDisplay() {
+  return <div className="balance">{formatCurrency(1000)}</div>;
 }
 
 export default App;
