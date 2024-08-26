@@ -9,7 +9,7 @@ export default function AccountOperations() {
 
   return (
     <div>
-      <h2>Create new customer</h2>
+      <h2>Your Account Operations</h2>
       <div className="inputs">
         <div>
           <label htmlFor="deposit">Deposit</label>
