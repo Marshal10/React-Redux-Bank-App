@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deposit, payLoan, requestLoan, withdraw } from "./AccountSlice";
 
 export default function AccountOperations() {
   const [depositAmt, setDepositAmt] = useState("");
@@ -6,6 +8,36 @@ export default function AccountOperations() {
   const [withdrawAmt, setWithdrawAmt] = useState("");
   const [loanAmt, setLoanAmt] = useState("");
   const [loanPurpose, setLoanPurpose] = useState("");
+
+  const dispatch = useDispatch();
+  const {
+    loan: currentLoan,
+    balance,
+    loanPurpose: currentPurpose,
+  } = useSelector((store) => store.account);
+
+  function handleDeposit() {
+    if (!depositAmt) return;
+    dispatch(deposit(depositAmt));
+    setDepositAmt("");
+  }
+
+  function handleWithdraw() {
+    if (!withdrawAmt) return;
+    dispatch(withdraw(withdrawAmt));
+    setWithdrawAmt("");
+  }
+
+  function handleLoanReq() {
+    if (!loanAmt && !loanPurpose) return;
+    dispatch(requestLoan(loanAmt, loanPurpose));
+    setLoanAmt("");
+    setLoanPurpose("");
+  }
+
+  function handlePayLoan() {
+    dispatch(payLoan());
+  }
 
   return (
     <div>
@@ -17,7 +49,7 @@ export default function AccountOperations() {
             type="number"
             id="deposit"
             value={depositAmt}
-            onChange={(e) => setDepositAmt((da) => e.target.value)}
+            onChange={(e) => setDepositAmt((da) => +e.target.value)}
           />
           <select
             value={currency}
@@ -27,7 +59,7 @@ export default function AccountOperations() {
             <option value="EUR">Euro</option>
             <option value="GBP">British Pound</option>
           </select>
-          <button>Deposit {depositAmt}</button>
+          <button onClick={handleDeposit}>Deposit {depositAmt}</button>
         </div>
         <div>
           <label htmlFor="withdraw">Withdraw</label>
@@ -35,9 +67,9 @@ export default function AccountOperations() {
             type="number"
             id="withdraw"
             value={withdrawAmt}
-            onChange={(e) => setWithdrawAmt((wa) => e.target.value)}
+            onChange={(e) => setWithdrawAmt((wa) => +e.target.value)}
           />
-          <button>Withdraw {withdrawAmt}</button>
+          <button onClick={handleWithdraw}>Withdraw {withdrawAmt}</button>
         </div>
         <div>
           <label htmlFor="loan">Request loan</label>
@@ -46,7 +78,7 @@ export default function AccountOperations() {
             id="loan"
             placeholder="Loan amount"
             value={loanAmt}
-            onChange={(e) => setLoanAmt((la) => e.target.value)}
+            onChange={(e) => setLoanAmt((la) => +e.target.value)}
           />
           <input
             type="text"
@@ -54,14 +86,16 @@ export default function AccountOperations() {
             value={loanPurpose}
             onChange={(e) => setLoanPurpose((lp) => e.target.value)}
           />
-          <button>Request Loan</button>
+          <button onClick={handleLoanReq}>Request Loan</button>
         </div>
-        <div>
-          <span>
-            Pay back ${"loan"} {"Purpose"}
-          </span>
-          <button>Pay Loan</button>
-        </div>
+        {currentLoan > 0 && (
+          <div>
+            <span>
+              Pay back ${currentLoan} ({currentPurpose})
+            </span>
+            <button onClick={handlePayLoan}>Pay Loan</button>
+          </div>
+        )}
       </div>
     </div>
   );
