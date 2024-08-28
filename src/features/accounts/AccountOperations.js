@@ -12,6 +12,7 @@ export default function AccountOperations() {
   const dispatch = useDispatch();
   const {
     loan: currentLoan,
+    balance,
     isLoading,
     loanPurpose: currentPurpose,
   } = useSelector((store) => store.account);
@@ -25,8 +26,13 @@ export default function AccountOperations() {
 
   function handleWithdraw() {
     if (!withdrawAmt) return;
-    dispatch(withdraw(withdrawAmt));
-    setWithdrawAmt("");
+
+    if (withdrawAmt > balance) {
+      alert(`You only have $${balance} in your account.`);
+    } else {
+      dispatch(withdraw(withdrawAmt));
+      setWithdrawAmt("");
+    }
   }
 
   function handleLoanReq() {
