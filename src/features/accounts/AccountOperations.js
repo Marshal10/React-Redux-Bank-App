@@ -43,7 +43,11 @@ export default function AccountOperations() {
   }
 
   function handlePayLoan() {
-    dispatch(payLoan());
+    if (currentLoan > balance) {
+      alert(`You don't have enough balance($${balance}) to pay the loan.`);
+    } else {
+      dispatch(payLoan());
+    }
   }
 
   return (
