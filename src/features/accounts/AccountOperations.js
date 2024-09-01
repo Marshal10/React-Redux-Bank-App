@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deposit, payLoan, requestLoan, withdraw } from "./AccountSlice";
 
-export default function AccountOperations() {
+export default function AccountOperations({ setError }) {
   const [depositAmt, setDepositAmt] = useState("");
   const [currency, setCurrency] = useState("USD");
-  const [withdrawAmt, setWithdrawAmt] = useState("");
+  const [withdrawAmt, setWithdrawAmt] = useState(0);
   const [loanAmt, setLoanAmt] = useState("");
   const [loanPurpose, setLoanPurpose] = useState("");
 
@@ -28,7 +28,7 @@ export default function AccountOperations() {
     if (!withdrawAmt) return;
 
     if (withdrawAmt > balance) {
-      alert(`You only have $${balance} in your account.`);
+      setError((e) => `You don't have enough balance`);
     } else {
       dispatch(withdraw(withdrawAmt));
       setWithdrawAmt("");
@@ -51,65 +51,68 @@ export default function AccountOperations() {
   }
 
   return (
-    <div>
-      <h2>Your Account Operations</h2>
-      <div className="inputs">
-        <div>
-          <label htmlFor="deposit">Deposit</label>
-          <input
-            type="number"
-            id="deposit"
-            value={depositAmt}
-            onChange={(e) => setDepositAmt((da) => +e.target.value)}
-          />
-          <select
-            value={currency}
-            onChange={(e) => setCurrency((c) => e.target.value)}
-          >
-            <option value="USD">US Dollar</option>
-            <option value="EUR">Euro</option>
-            <option value="GBP">British Pound</option>
-          </select>
-          <button onClick={handleDeposit} disabled={isLoading}>
-            {isLoading ? "Converting..." : `Deposit ${depositAmt}`}
-          </button>
-        </div>
-        <div>
-          <label htmlFor="withdraw">Withdraw</label>
-          <input
-            type="number"
-            id="withdraw"
-            value={withdrawAmt}
-            onChange={(e) => setWithdrawAmt((wa) => +e.target.value)}
-          />
-          <button onClick={handleWithdraw}>Withdraw {withdrawAmt}</button>
-        </div>
-        <div>
-          <label htmlFor="loan">Request loan</label>
-          <input
-            type="number"
-            id="loan"
-            placeholder="Loan amount"
-            value={loanAmt}
-            onChange={(e) => setLoanAmt((la) => +e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Loan purpose"
-            value={loanPurpose}
-            onChange={(e) => setLoanPurpose((lp) => e.target.value)}
-          />
-          <button onClick={handleLoanReq}>Request Loan</button>
-        </div>
-        {currentLoan > 0 && (
+    <>
+      <div>
+        <h2>Your Account Operations</h2>
+        <div className="inputs">
           <div>
-            <span>
-              Pay back ${currentLoan} ({currentPurpose})
-            </span>
-            <button onClick={handlePayLoan}>Pay Loan</button>
+            <label htmlFor="deposit">Deposit</label>
+            <input
+              type="number"
+              id="deposit"
+              value={depositAmt}
+              onChange={(e) => setDepositAmt((da) => +e.target.value)}
+            />
+            <select
+              value={currency}
+              onChange={(e) => setCurrency((c) => e.target.value)}
+            >
+              <option value="USD">US Dollar</option>
+              <option value="EUR">Euro</option>
+              <option value="GBP">British Pound</option>
+            </select>
+            <button onClick={handleDeposit} disabled={isLoading}>
+              {isLoading ? "Converting..." : `Deposit ${depositAmt}`}
+            </button>
           </div>
-        )}
+          <div>
+            <label htmlFor="withdraw">Withdraw</label>
+            <input
+              type="number"
+              id="withdraw"
+              value={withdrawAmt}
+              min={0}
+              onChange={(e) => setWithdrawAmt((wa) => +e.target.value)}
+            />
+            <button onClick={handleWithdraw}>Withdraw {withdrawAmt}</button>
+          </div>
+          <div>
+            <label htmlFor="loan">Request loan</label>
+            <input
+              type="number"
+              id="loan"
+              placeholder="Loan amount"
+              value={loanAmt}
+              onChange={(e) => setLoanAmt((la) => +e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Loan purpose"
+              value={loanPurpose}
+              onChange={(e) => setLoanPurpose((lp) => e.target.value)}
+            />
+            <button onClick={handleLoanReq}>Request Loan</button>
+          </div>
+          {currentLoan > 0 && (
+            <div>
+              <span>
+                Pay back ${currentLoan} ({currentPurpose})
+              </span>
+              <button onClick={handlePayLoan}>Pay Loan</button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

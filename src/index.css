@@ -38,3 +38,39 @@ button {
   min-width: 180px;
   text-align: center;
 }
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  opacity: 0.5;
+  z-index: 100;
+}
+
+.popup {
+  background-color: #f7f7f7;
+  padding: 40px;
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 200;
+}
+
+.close-btn {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  font-size: 18px;
+  color: rgb(156, 11, 11);
+  font-weight: 600;
+  cursor: pointer;
+}
