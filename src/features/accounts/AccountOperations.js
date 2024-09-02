@@ -44,7 +44,9 @@ export default function AccountOperations({ setError }) {
 
   function handlePayLoan() {
     if (currentLoan > balance) {
-      alert(`You don't have enough balance($${balance}) to pay the loan.`);
+      setError(
+        (e) => `You don't have enough balance($${balance}) to pay the loan.`
+      );
     } else {
       dispatch(payLoan());
     }
